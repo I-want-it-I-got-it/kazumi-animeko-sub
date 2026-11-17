@@ -41,13 +41,16 @@
         "searchConfig": {
           "searchUrl": "https://www.agedm.io/search?query={keyword}",
           "subjectFormatId": "indexed",
-          "channelFormatId": "no-channel",
+          "channelFormatId": "index-grouped",
           "selectorSubjectFormatIndexed": {
             "selectNames": "div.card.cata_video_item h5.card-title",
             "selectLinks": "div.card.cata_video_item a.d-block"
           },
-          "selectorChannelFormatNoChannel": {
-            "selectEpisodes": "div.tab-content > div.tab-pane:nth-of-type(1) ul.video_detail_episode a"
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "ul.nav.nav-pills > li.nav-item > button.nav-link",
+            "matchChannelName": "^(?<ch>.+?)(?:\\s+\\d+)?$",
+            "selectEpisodeLists": "div.tab-content > div.tab-pane",
+            "selectEpisodesFromList": "ul.video_detail_episode a"
           }
         },
         "tier": 2
@@ -71,6 +74,7 @@
           },
           "selectorChannelFormatFlattened": {
             "selectChannelNames": "ul.tab_control.play_from > *",
+            "matchChannelName": "^(?<ch>.+?)(?:\\s+\\d+)?$",
             "selectEpisodeLists": "div.tab_content > ul.play_list",
             "selectEpisodesFromList": "li > a"
           }
@@ -97,6 +101,7 @@
           },
           "selectorChannelFormatFlattened": {
             "selectChannelNames": "div.module-tab-content > div.module-tab-item",
+            "matchChannelName": "^(?<ch>.+?)(?:\\s+\\d+)?$",
             "selectEpisodeLists": "div.module-player-list",
             "selectEpisodesFromList": "div.module-blocklist a"
           }
@@ -117,11 +122,12 @@
           "subjectFormatId": "indexed",
           "channelFormatId": "index-grouped",
           "selectorSubjectFormatIndexed": {
-            "selectNames": "div.search.container > ul > li > h3 > a",
-            "selectLinks": "div.search.container > ul > li > h3 > a"
+            "selectNames": "div.search.container > ul > li:nth-child(-n+8) > h3 > a",
+            "selectLinks": "div.search.container > ul > li:nth-child(-n+8) > h3 > a"
           },
           "selectorChannelFormatFlattened": {
             "selectChannelNames": "div.playlist div.tabs > *",
+            "matchChannelName": "^(?<ch>.+?)(?:\\s+\\d+)?$",
             "selectEpisodeLists": "div.playlist > div.row > ul",
             "selectEpisodesFromList": "li > a"
           }
@@ -138,16 +144,19 @@
         "description": "由 KazumiRules 的 TvTFun v1.3 规则转写",
         "iconUrl": "https://www.tvtfun.net/favicon.ico",
         "searchConfig": {
-          "searchUrl": "https://www.tvtfun.net/api/client/anime?keyword={keyword}&page=1&pageSize=24",
+          "searchUrl": "https://www.tvtfun.net/api/client/anime?keyword={keyword}&page=1&pageSize=8",
           "subjectFormatId": "json-path-indexed",
-          "channelFormatId": "no-channel",
+          "channelFormatId": "index-grouped",
           "selectorSubjectFormatJsonPathIndexed": {
             "selectNames": "$.data.items[*]['name']",
             "selectLinks": "$.data.items[*]['slug']",
             "linkTemplate": "https://www.tvtfun.net/watch/{value}/1"
           },
-          "selectorChannelFormatNoChannel": {
-            "selectEpisodes": "ol.tvt-watch-episodes a"
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "div.tvt-watch-lines > button[aria-pressed=true]",
+            "matchChannelName": "^(?<ch>.+?)(?:\\s+\\d+)?$",
+            "selectEpisodeLists": "ol.tvt-watch-episodes",
+            "selectEpisodesFromList": "a"
           }
         },
         "tier": 2
@@ -166,11 +175,12 @@
           "subjectFormatId": "indexed",
           "channelFormatId": "index-grouped",
           "selectorSubjectFormatIndexed": {
-            "selectNames": "div.vod-detail.search-list div.detail-info > a",
-            "selectLinks": "div.vod-detail.search-list a[href*='/bgmplay/']"
+            "selectNames": "div.row.mask1 > div.vod-detail.search-list:nth-child(-n+8) div.detail-info > a",
+            "selectLinks": "div.row.mask1 > div.vod-detail.search-list:nth-child(-n+8) a[href*='/bgmplay/']"
           },
           "selectorChannelFormatFlattened": {
             "selectChannelNames": "div.anthology-tab a",
+            "matchChannelName": "(?<ch>[^\\s\\-\\ue000-\\uf8ff]+)",
             "selectEpisodeLists": "ul.anthology-list-play.size",
             "selectEpisodesFromList": "li > a"
           }
@@ -196,6 +206,7 @@
           },
           "selectorChannelFormatFlattened": {
             "selectChannelNames": "div.tabs > ul.menu0 > li",
+            "matchChannelName": "^(?<ch>.+?)(?:\\s+\\d+)?$",
             "selectEpisodeLists": "div.movurl > ul",
             "selectEpisodesFromList": "li > a"
           }
@@ -240,13 +251,16 @@
         "searchConfig": {
           "searchUrl": "https://m.ezdmw.org/Index/search.html?searchText={keyword}",
           "subjectFormatId": "indexed",
-          "channelFormatId": "no-channel",
+          "channelFormatId": "index-grouped",
           "selectorSubjectFormatIndexed": {
             "selectNames": "section#some_drama > div p",
             "selectLinks": "section#some_drama > div a"
           },
-          "selectorChannelFormatNoChannel": {
-            "selectEpisodes": "section.anthology a.circuit_switch1"
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "section.anthology:not(#dw_text) > div.line_button1",
+            "matchChannelName": "^(?<ch>.+?)(?:\\s+\\d+)?$",
+            "selectEpisodeLists": "section.anthology:not(#dw_text)",
+            "selectEpisodesFromList": "a.circuit_switch1"
           }
         },
         "tier": 2
@@ -308,6 +322,7 @@
           },
           "selectorChannelFormatFlattened": {
             "selectChannelNames": "div.anthology-tab a",
+            "matchChannelName": "^(?<ch>.+?)(?:\\s+\\d+)?$",
             "selectEpisodeLists": "ul.anthology-list-play.size",
             "selectEpisodesFromList": "li > a"
           }
@@ -334,6 +349,7 @@
           },
           "selectorChannelFormatFlattened": {
             "selectChannelNames": "a.hl-tabs-btn",
+            "matchChannelName": "^(?<ch>.+?)(?:\\s+\\d+)?$",
             "selectEpisodeLists": "ul.hl-plays-list",
             "selectEpisodesFromList": "li > a"
           }
@@ -358,8 +374,9 @@
             "selectLinks": "section[class*='search-results-section'] a[class*='video-card']"
           },
           "selectorChannelFormatFlattened": {
-            "selectChannelNames": "div[class*='episode-panel'] div[class*='episode-list']",
-            "selectEpisodeLists": "div[class*='episode-panel'] div[class*='episode-list']",
+            "selectChannelNames": "div[class*='episode-panel'] > h3.episode-source-title",
+            "matchChannelName": "^(?<ch>\\S+)",
+            "selectEpisodeLists": "div[class*='episode-panel'] > div[class*='episode-list']",
             "selectEpisodesFromList": "a"
           }
         },

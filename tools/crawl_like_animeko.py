@@ -29,6 +29,23 @@ def absu(h, base):
     if h.startswith("//"): return "https:" + h
     return base.rstrip("/") + "/" + h.lstrip("/")
 
+DEFAULT_MATCH_CH = r"^(?<ch>.+?)(\d+)?$"   # Animeko SelectorChannelFormatIndexGrouped 默认值
+
+def jsoup_text(e):
+    return " ".join(e.get_text(" ").split())
+
+def chip_label(text, cc):
+    """按 Animeko 规则算出选源面板里显示的线路名 (= Media.properties.alliance)。None 表示该线路被丢弃。"""
+    expr = cc.get("matchChannelName", DEFAULT_MATCH_CH)
+    if not text:
+        return None
+    if expr == "":
+        return text
+    m = re.search(expr.replace("(?<", "(?P<"), text)
+    if not m:
+        return None
+    return m.groupdict().get("ch") or text
+
 def sel(doc, css):
     try: return doc.select(css)
     except Exception as e: return "ERR:" + str(e)[:60]
@@ -80,7 +97,8 @@ def run(src):
             if isinstance(chs, str) or isinstance(lists, str):
                 info["err"] = chs if isinstance(chs, str) else lists
             else:
-                info["ch"] = [x.get_text(" ", strip=True)[:16] for x in chs]
+                info["ch_raw"] = [jsoup_text(x)[:24] for x in chs]
+                info["chips"] = [chip_label(jsoup_text(x), cc) for x in chs][:len(lists)]
                 eps = [[e.get_text(" ", strip=True) for e in L.select(cc["selectEpisodesFromList"])] for L in lists]
                 info["eps"] = [len(e) for e in eps]
                 info["range"] = [(e[0][:8], e[-1][:8]) if e else None for e in eps]
@@ -90,6 +108,7 @@ def run(src):
             else:
                 t = [e.get_text(" ", strip=True) for e in eps]
                 info["eps"] = len(t); info["range"] = (t[0][:8], t[-1][:8]) if t else None
+                info["chips"] = [""]  # no-channel: 线路名恒为空
         details.append(info)
     rep["total_s"] = round(time.time()-t0, 1)
     rep["details"] = details

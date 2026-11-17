@@ -34,9 +34,11 @@ PROFILES = {
                     url="https://www.agedm.io/search?query={keyword}",
                     names="div.card.cata_video_item h5.card-title",
                     links="div.card.cata_video_item a.d-block"),
-        # 该站 6 条线路没有可用的线路名节点，只取第一条主线，避免 6 份同号剧集并列
-        chapter=dict(kind="no-channel",
-                     eps="div.tab-content > div.tab-pane:nth-of-type(1) ul.video_detail_episode a"),
+        # 线路名在 ul.nav-pills 的按钮里（VIP 爱奇艺 / 非凡 / 暴风 ...），与 tab-pane 一一对应
+        chapter=dict(kind="index-grouped",
+                     names="ul.nav.nav-pills > li.nav-item > button.nav-link",
+                     lists="div.tab-content > div.tab-pane",
+                     eps="ul.video_detail_episode a"),
     ),
     "DM84": dict(
         search=dict(kind="html",
@@ -51,8 +53,8 @@ PROFILES = {
     "MXdm": dict(
         search=dict(kind="html",
                     url="https://www.dcc3.com/search/?wd={keyword}",
-                    names="div.search.container > ul > li > h3 > a",
-                    links="div.search.container > ul > li > h3 > a"),
+                    names="div.search.container > ul > li:nth-child(-n+8) > h3 > a",
+                    links="div.search.container > ul > li:nth-child(-n+8) > h3 > a"),
         chapter=dict(kind="index-grouped",
                      names="div.playlist div.tabs > *",
                      lists="div.playlist > div.row > ul",
@@ -61,12 +63,13 @@ PROFILES = {
     "akianime": dict(
         search=dict(kind="html",
                     url="https://www.akianime.cc/bgmsearch/-------------.html?wd={keyword}",
-                    names="div.vod-detail.search-list div.detail-info > a",
-                    links="div.vod-detail.search-list a[href*='/bgmplay/']"),
+                    names="div.row.mask1 > div.vod-detail.search-list:nth-child(-n+8) div.detail-info > a",
+                    links="div.row.mask1 > div.vod-detail.search-list:nth-child(-n+8) a[href*='/bgmplay/']"),
         chapter=dict(kind="index-grouped",
                      names="div.anthology-tab a",
                      lists="ul.anthology-list-play.size",
-                     eps="li > a", match=""),
+                     # 原文形如 "<图标> 中画2-不要相信视频里的广告 1280"：去掉私用区图标、广告语和集数
+                     eps="li > a", match="(?<ch>[^\\s\\-\\ue000-\\uf8ff]+)"),
     ),
     "baimao": dict(
         search=dict(kind="html",
@@ -83,9 +86,11 @@ PROFILES = {
                     url="https://m.ezdmw.org/Index/search.html?searchText={keyword}",
                     names="section#some_drama > div p",
                     links="section#some_drama > div a"),
-        # 剧集链接是线路标签的兄弟节点，无法按“线路容器”分组；取主线
-        chapter=dict(kind="no-channel",
-                     eps="section.anthology a.circuit_switch1"),
+        # 剧集链接与线路标签是兄弟节点：以 section 为列表、只取主线链接，线路名用 "主线线路" 标签
+        chapter=dict(kind="index-grouped",
+                     names="section.anthology:not(#dw_text) > div.line_button1",
+                     lists="section.anthology:not(#dw_text)",
+                     eps="a.circuit_switch1"),
     ),
     "mutefun": dict(
         search=dict(kind="html",
@@ -93,9 +98,9 @@ PROFILES = {
                     names="section[class*='search-results-section'] a[class*='video-card'] span[class*='video-card-title']",
                     links="section[class*='search-results-section'] a[class*='video-card']"),
         chapter=dict(kind="index-grouped",
-                     names="div[class*='episode-panel'] div[class*='episode-list']",
-                     lists="div[class*='episode-panel'] div[class*='episode-list']",
-                     eps="a", match=""),
+                     names="div[class*='episode-panel'] > h3.episode-source-title",
+                     lists="div[class*='episode-panel'] > div[class*='episode-list']",
+                     eps="a", match="^(?<ch>\\S+)"),
     ),
     # ---- JSON 搜索 ----
     "LMM": dict(
@@ -118,7 +123,7 @@ PROFILES = {
         chapter=dict(kind="index-grouped",
                      names="ul.swiper-wrapper > li.swiper-slide a.swiper-slide-text",
                      lists="div.tab-pane.lists-box",
-                     eps="div.listitem a", match=""),
+                     eps="div.listitem a", match=None),
     ),
     "mgnacg": dict(
         search=dict(kind="json",
@@ -144,11 +149,15 @@ PROFILES = {
     ),
     "TvTFun": dict(
         search=dict(kind="json",
-                    url="https://www.tvtfun.net/api/client/anime?keyword={keyword}&page=1&pageSize=24",
+                    url="https://www.tvtfun.net/api/client/anime?keyword={keyword}&page=1&pageSize=8",
                     names="$.data.items[*]['name']",
                     links="$.data.items[*]['slug']",
                     template="https://www.tvtfun.net/watch/{value}/1"),
-        chapter=dict(kind="no-channel", eps="ol.tvt-watch-episodes a"),
+        # 页面只渲染当前线路的一份剧集列表，线路名取激活的按钮
+        chapter=dict(kind="index-grouped",
+                     names="div.tvt-watch-lines > button[aria-pressed=true]",
+                     lists="ol.tvt-watch-episodes",
+                     eps="a"),
     ),
     "giriGiriLove": dict(
         search=dict(kind="json",
@@ -175,6 +184,10 @@ UNSUPPORTED = {
     "xfdmnext": "章节走 POST JSON 接口，web-selector 仅支持网页 DOM 解析",
     "xfdmneo": "源站已改版为 xifan.moe（Astro 前端渲染），旧规则里的 .thumb-txt/.thumb-menu 节点已不存在",
 }
+
+# Animeko 的 matchChannelName 缺省值是 ^(?<ch>.+?)(\d+)?$，会把 "线路1"/"线路2" 都截成 "线路"、
+# "X.4" 截成 "X."，选源面板里同名线路被合并成一个芯片。这里默认只去掉以空格分隔的集数后缀（"简中 39" -> "简中"）。
+DEFAULT_MATCH_CHANNEL = "^(?<ch>.+?)(?:\\s+\\d+)?$"
 
 MATCH_EP = "第\\s*(?<ep>.+)\\s*[话集]"
 MATCH_EP_LOOSE = "^(?:第\\s*)?(?<ep>\\d+(?:\\.\\d+)?)(?:\\s*[话話集])?$"
@@ -218,7 +231,8 @@ def build_source(rule_name: str, rule: dict, profile: dict) -> dict:
     if c["kind"] == "index-grouped":
         cfg["selectorChannelFormatFlattened"] = {
             "selectChannelNames": c["names"],
-            **({"matchChannelName": c["match"]} if c.get("match") else {}),
+            **({} if ("match" in c and c["match"] is None)
+               else {"matchChannelName": c.get("match") or DEFAULT_MATCH_CHANNEL}),
             "selectEpisodeLists": c["lists"],
             "selectEpisodesFromList": c["eps"],
         }
