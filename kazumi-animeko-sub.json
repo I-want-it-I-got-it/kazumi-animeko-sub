@@ -1,0 +1,394 @@
+{
+  "schemaVersion": 2,
+  "name": "KazumiRules 转写订阅",
+  "description": "由 Predidit/KazumiRules 的 Kazumi 规则逐条转写为 Animeko web-selector 数据源",
+  "websiteUrl": "https://github.com/Predidit/KazumiRules",
+  "mediaSources": [
+    {
+      "id": "kazumi-7sefun",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "7sefun",
+        "description": "由 KazumiRules 的 7sefun v1.3 规则转写",
+        "iconUrl": "https://www.7sefun.top/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.7sefun.top/vodsearch/-------------.html?wd={keyword}",
+          "subjectFormatId": "indexed",
+          "channelFormatId": "index-grouped",
+          "selectorSubjectFormatIndexed": {
+            "selectNames": "div.video.anim > div.video-by",
+            "selectLinks": "div.video.anim a.video-wrapper"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "div.chat:has(.vod-play-list-container) > div.chat-header.anim",
+            "matchChannelName": "(?<ch>[^\\s]+线)$",
+            "selectEpisodeLists": "div.message-container.vod-play-list-container",
+            "selectEpisodesFromList": "a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-age",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "AGE",
+        "description": "由 KazumiRules 的 AGE v1.6 规则转写",
+        "iconUrl": "https://www.agedm.io/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.agedm.io/search?query={keyword}",
+          "subjectFormatId": "indexed",
+          "channelFormatId": "no-channel",
+          "selectorSubjectFormatIndexed": {
+            "selectNames": "div.card.cata_video_item h5.card-title",
+            "selectLinks": "div.card.cata_video_item a.d-block"
+          },
+          "selectorChannelFormatNoChannel": {
+            "selectEpisodes": "div.tab-content > div.tab-pane:nth-of-type(1) ul.video_detail_episode a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-dm84",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "DM84",
+        "description": "由 KazumiRules 的 DM84 v1.4 规则转写",
+        "iconUrl": "https://dmbus.cc/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://dmbus.cc/s----------.html?wd={keyword}",
+          "subjectFormatId": "indexed",
+          "channelFormatId": "index-grouped",
+          "selectorSubjectFormatIndexed": {
+            "selectNames": "ul.v_list > li > div.item > a.title",
+            "selectLinks": "ul.v_list > li > div.item > a.title"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "ul.tab_control.play_from > *",
+            "selectEpisodeLists": "div.tab_content > ul.play_list",
+            "selectEpisodesFromList": "li > a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-lmm",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "LMM",
+        "description": "由 KazumiRules 的 LMM v2.4 规则转写",
+        "iconUrl": "https://www.lmm22.com/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.lmm22.com/index.php/ajax/suggest?mid=1&wd={keyword}",
+          "subjectFormatId": "json-path-indexed",
+          "channelFormatId": "index-grouped",
+          "selectorSubjectFormatJsonPathIndexed": {
+            "selectNames": "$.list[*]['name']",
+            "selectLinks": "$.list[*]['id']",
+            "linkTemplate": "https://www.lmm22.com/index.php/vod/detail/id/{value}.html"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "div.module-tab-content > div.module-tab-item",
+            "selectEpisodeLists": "div.module-player-list",
+            "selectEpisodesFromList": "div.module-blocklist a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-mxdm",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "MXdm",
+        "description": "由 KazumiRules 的 MXdm v2.4 规则转写",
+        "iconUrl": "https://www.dcc3.com/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.dcc3.com/search/?wd={keyword}",
+          "subjectFormatId": "indexed",
+          "channelFormatId": "index-grouped",
+          "selectorSubjectFormatIndexed": {
+            "selectNames": "div.search.container > ul > li > h3 > a",
+            "selectLinks": "div.search.container > ul > li > h3 > a"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "div.playlist div.tabs > *",
+            "selectEpisodeLists": "div.playlist div.row > ul.list6",
+            "selectEpisodesFromList": "li > a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-tvtfun",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "TvTFun",
+        "description": "由 KazumiRules 的 TvTFun v1.3 规则转写",
+        "iconUrl": "https://www.tvtfun.net/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.tvtfun.net/api/client/anime?keyword={keyword}&page=1&pageSize=24",
+          "subjectFormatId": "json-path-indexed",
+          "channelFormatId": "no-channel",
+          "selectorSubjectFormatJsonPathIndexed": {
+            "selectNames": "$.data.items[*]['name']",
+            "selectLinks": "$.data.items[*]['slug']",
+            "linkTemplate": "https://www.tvtfun.net/watch/{value}/1"
+          },
+          "selectorChannelFormatNoChannel": {
+            "selectEpisodes": "ol.tvt-watch-episodes a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-aafun",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "aafun",
+        "description": "由 KazumiRules 的 aafun v1.2 规则转写",
+        "iconUrl": "https://www.moonci.com/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.moonci.com/search/-------------.html?wd={keyword}&submit=",
+          "subjectFormatId": "a",
+          "channelFormatId": "index-grouped",
+          "selectorSubjectFormatA": {
+            "selectLists": "div.hl-item-title > a"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "a.hl-tabs-btn",
+            "selectEpisodeLists": "ul.hl-plays-list",
+            "selectEpisodesFromList": "li > a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-akianime",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "akianime",
+        "description": "由 KazumiRules 的 akianime v1.4 规则转写",
+        "iconUrl": "https://www.akianime.cc/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.akianime.cc/bgmsearch/-------------.html?wd={keyword}",
+          "subjectFormatId": "indexed",
+          "channelFormatId": "index-grouped",
+          "selectorSubjectFormatIndexed": {
+            "selectNames": "div.vod-detail.search-list div.detail-info > a",
+            "selectLinks": "div.vod-detail.search-list a[href*='/bgmplay/']"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "div.anthology-tab a",
+            "selectEpisodeLists": "ul.anthology-list-play.size",
+            "selectEpisodesFromList": "li > a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-baimao",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "baimao",
+        "description": "由 KazumiRules 的 baimao v1.0 规则转写",
+        "iconUrl": "https://www.baimaodm.com/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.baimaodm.com/s_all?ex=1&kw={keyword}",
+          "subjectFormatId": "indexed",
+          "channelFormatId": "index-grouped",
+          "selectorSubjectFormatIndexed": {
+            "selectNames": "div.lpic > ul > li h2 > a",
+            "selectLinks": "div.lpic > ul > li h2 > a"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "div.tabs:has(.main0 .movurl ul) > ul.menu0 > *",
+            "selectEpisodeLists": "div.movurl > ul",
+            "selectEpisodesFromList": "li > a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-dalvdm",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "dalvdm",
+        "description": "由 KazumiRules 的 dalvdm v1.2 规则转写",
+        "iconUrl": "https://www.sbdl.cc/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.sbdl.cc/index.php/ajax/suggest?mid=1&wd={keyword}",
+          "subjectFormatId": "json-path-indexed",
+          "channelFormatId": "index-grouped",
+          "selectorSubjectFormatJsonPathIndexed": {
+            "selectNames": "$.list[*]['name']",
+            "selectLinks": "$.list[*]['id']",
+            "linkTemplate": "https://www.sbdl.cc/index.php/vod/detail/id/{value}.html"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "ul.swiper-wrapper > li.swiper-slide a.swiper-slide-text",
+            "selectEpisodeLists": "div.tab-pane.lists-box",
+            "selectEpisodesFromList": "div.listitem a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-ezdmw",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "ezdmw",
+        "description": "由 KazumiRules 的 ezdmw v1.2 规则转写",
+        "iconUrl": "https://m.ezdmw.org/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://m.ezdmw.org/Index/search.html?searchText={keyword}",
+          "subjectFormatId": "indexed",
+          "channelFormatId": "no-channel",
+          "selectorSubjectFormatIndexed": {
+            "selectNames": "section#some_drama > div p",
+            "selectLinks": "section#some_drama > div a"
+          },
+          "selectorChannelFormatNoChannel": {
+            "selectEpisodes": "section.anthology a.circuit_switch1"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-girigirilove",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "giriGiriLove",
+        "description": "由 KazumiRules 的 giriGiriLove v2.7 规则转写",
+        "iconUrl": "https://ani.girigirilove.com/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://m3u8.girigirilove.com/api.php/Vod/get_list?offset=0&limit=24&vod_name={keyword}",
+          "subjectFormatId": "json-path-indexed",
+          "channelFormatId": "index-grouped",
+          "rawBaseUrl": "https://bg.girigirilove.com",
+          "selectorSubjectFormatJsonPathIndexed": {
+            "selectNames": "$.info.rows[*]['vod_name']",
+            "selectLinks": "$.info.rows[*]['vod_id']",
+            "linkTemplate": "/GV{value}/"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": ".anthology-tab > .swiper-wrapper > a",
+            "matchChannelName": "^(?<ch>.+?)(?:\\s*\\d+)?$",
+            "selectEpisodeLists": ".anthology-list > .anthology-list-box",
+            "selectEpisodesFromList": ".anthology-list-play a[href]"
+          },
+          "matchVideo": {
+            "enableNestedUrl": false,
+            "matchNestedUrl": "",
+            "matchVideoUrl": "(?i)(?:^|[?&]url=)(?<v>https?://[^\\s#]+?\\.(?:m3u8|mpd|mp4|m4v|mkv|webm)(?:\\?[^\\s#]*)?)(?=&|$)",
+            "cookies": "",
+            "addHeadersToVideo": {
+              "referer": "https://ani.girigirilove.com/"
+            }
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-mgnacg",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "mgnacg",
+        "description": "由 KazumiRules 的 mgnacg v1.2 规则转写",
+        "iconUrl": "https://www.mgnacg.com/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.mgnacg.com/index.php/ajax/suggest?mid=1&wd={keyword}",
+          "subjectFormatId": "json-path-indexed",
+          "channelFormatId": "index-grouped",
+          "selectorSubjectFormatJsonPathIndexed": {
+            "selectNames": "$.list[*]['name']",
+            "selectLinks": "$.list[*]['id']",
+            "linkTemplate": "https://www.mgnacg.com/media/{value}"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "div.anthology-tab a",
+            "selectEpisodeLists": "ul.anthology-list-play.size",
+            "selectEpisodesFromList": "li > a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-moonci",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "moonci",
+        "description": "由 KazumiRules 的 moonci v1.1 规则转写",
+        "iconUrl": "https://www.moonci.com/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.moonci.com/index.php/ajax/suggest?mid=1&wd={keyword}",
+          "subjectFormatId": "json-path-indexed",
+          "channelFormatId": "index-grouped",
+          "selectorSubjectFormatJsonPathIndexed": {
+            "selectNames": "$.list[*]['name']",
+            "selectLinks": "$.list[*]['id']",
+            "linkTemplate": "https://www.moonci.com/anime/{value}.html"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "a.hl-tabs-btn",
+            "selectEpisodeLists": "ul.hl-plays-list",
+            "selectEpisodesFromList": "li > a"
+          }
+        },
+        "tier": 2
+      }
+    },
+    {
+      "id": "kazumi-mutefun",
+      "factoryId": "web-selector",
+      "version": 2,
+      "arguments": {
+        "name": "mutefun",
+        "description": "由 KazumiRules 的 mutefun v1.6 规则转写",
+        "iconUrl": "https://www.mutedm.com/favicon.ico",
+        "searchConfig": {
+          "searchUrl": "https://www.mutedm.com/search?q={keyword}",
+          "subjectFormatId": "indexed",
+          "channelFormatId": "index-grouped",
+          "selectorSubjectFormatIndexed": {
+            "selectNames": "section[class*='search-results-section'] a[class*='video-card'] span[class*='video-card-title']",
+            "selectLinks": "section[class*='search-results-section'] a[class*='video-card']"
+          },
+          "selectorChannelFormatFlattened": {
+            "selectChannelNames": "div[class*='episode-panel'] div[class*='episode-list']",
+            "selectEpisodeLists": "div[class*='episode-panel'] div[class*='episode-list']",
+            "selectEpisodesFromList": "a"
+          }
+        },
+        "tier": 2
+      }
+    }
+  ]
+}
