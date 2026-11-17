@@ -1,0 +1,31 @@
+name: verify-sources
+on:
+  schedule:
+    - cron: "0 1 * * *"   # 每天 09:00 (UTC+8)
+  workflow_dispatch:
+  pull_request:
+    paths: ["kazumi-animeko-sub.json", "kazumi2animeko.py", "verify_sub.py"]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        kw: ["葬送的芙莉莲", "名侦探柯南"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install requests beautifulsoup4 lxml
+      - name: verify
+        env: { KW: "${{ matrix.kw }}" }
+        run: |
+          python3 verify_sub.py kazumi-animeko-sub.json | tee out.txt
+          {
+            echo "### KW=${KW}"
+            echo '| id | http | 搜索 | 线路/列表 | 首线集数 | 结论 |'
+            echo '|---|---|---|---|---|---|'
+            python3 -c "import json;[print(f\"| {r.get('id')} | {r.get('http','-')} | {r.get('names','-')} | {r.get('channels','-')}/{r.get('lists','-')} | {r.get('eps','-')} | {'OK' if r.get('ok_search') and r.get('ok') else 'FAIL ' + str(r.get('search') or r.get('detail') or r.get('error') or '')[:60]} |\") for r in json.load(open('validate_report.json'))]"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with: { name: "report-${{ strategy.job-index }}", path: validate_report.json }

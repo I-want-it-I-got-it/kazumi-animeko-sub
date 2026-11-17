@@ -17,8 +17,8 @@
           "subjectFormatId": "indexed",
           "channelFormatId": "index-grouped",
           "selectorSubjectFormatIndexed": {
-            "selectNames": "div.video.anim > div.video-by",
-            "selectLinks": "div.video.anim a.video-wrapper"
+            "selectNames": "div.videos > div.video.anim:nth-child(-n+6) > div.video-by",
+            "selectLinks": "div.videos > div.video.anim:nth-child(-n+6) a.video-wrapper"
           },
           "selectorChannelFormatFlattened": {
             "selectChannelNames": "div.chat:has(.vod-play-list-container) > div.chat-header.anim",
@@ -66,8 +66,8 @@
           "subjectFormatId": "indexed",
           "channelFormatId": "index-grouped",
           "selectorSubjectFormatIndexed": {
-            "selectNames": "ul.v_list > li > div.item > a.title",
-            "selectLinks": "ul.v_list > li > div.item > a.title"
+            "selectNames": "ul.v_list > li:nth-child(-n+8) > div.item > a.title",
+            "selectLinks": "ul.v_list > li:nth-child(-n+8) > div.item > a.title"
           },
           "selectorChannelFormatFlattened": {
             "selectChannelNames": "ul.tab_control.play_from > *",
@@ -122,7 +122,7 @@
           },
           "selectorChannelFormatFlattened": {
             "selectChannelNames": "div.playlist div.tabs > *",
-            "selectEpisodeLists": "div.playlist div.row > ul.list6",
+            "selectEpisodeLists": "div.playlist > div.row > ul",
             "selectEpisodesFromList": "li > a"
           }
         },
@@ -148,30 +148,6 @@
           },
           "selectorChannelFormatNoChannel": {
             "selectEpisodes": "ol.tvt-watch-episodes a"
-          }
-        },
-        "tier": 2
-      }
-    },
-    {
-      "id": "kazumi-aafun",
-      "factoryId": "web-selector",
-      "version": 2,
-      "arguments": {
-        "name": "aafun",
-        "description": "由 KazumiRules 的 aafun v1.2 规则转写",
-        "iconUrl": "https://www.moonci.com/favicon.ico",
-        "searchConfig": {
-          "searchUrl": "https://www.moonci.com/search/-------------.html?wd={keyword}&submit=",
-          "subjectFormatId": "a",
-          "channelFormatId": "index-grouped",
-          "selectorSubjectFormatA": {
-            "selectLists": "div.hl-item-title > a"
-          },
-          "selectorChannelFormatFlattened": {
-            "selectChannelNames": "a.hl-tabs-btn",
-            "selectEpisodeLists": "ul.hl-plays-list",
-            "selectEpisodesFromList": "li > a"
           }
         },
         "tier": 2
@@ -211,15 +187,15 @@
         "description": "由 KazumiRules 的 baimao v1.0 规则转写",
         "iconUrl": "https://www.baimaodm.com/favicon.ico",
         "searchConfig": {
-          "searchUrl": "https://www.baimaodm.com/s_all?ex=1&kw={keyword}",
+          "searchUrl": "https://www.bmddm.com/s_all?ex=1&kw={keyword}",
           "subjectFormatId": "indexed",
           "channelFormatId": "index-grouped",
           "selectorSubjectFormatIndexed": {
-            "selectNames": "div.lpic > ul > li h2 > a",
-            "selectLinks": "div.lpic > ul > li h2 > a"
+            "selectNames": "div.lpic > ul > li:nth-child(-n+8) h2 > a",
+            "selectLinks": "div.lpic > ul > li:nth-child(-n+8) h2 > a"
           },
           "selectorChannelFormatFlattened": {
-            "selectChannelNames": "div.tabs:has(.main0 .movurl ul) > ul.menu0 > *",
+            "selectChannelNames": "div.tabs > ul.menu0 > li",
             "selectEpisodeLists": "div.movurl > ul",
             "selectEpisodesFromList": "li > a"
           }

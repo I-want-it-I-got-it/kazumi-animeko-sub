@@ -22,8 +22,8 @@ PROFILES = {
     "7sefun": dict(
         search=dict(kind="html",
                     url="https://www.7sefun.top/vodsearch/-------------.html?wd={keyword}",
-                    names="div.video.anim > div.video-by",
-                    links="div.video.anim a.video-wrapper"),
+                    names="div.videos > div.video.anim:nth-child(-n+6) > div.video-by",
+                    links="div.videos > div.video.anim:nth-child(-n+6) a.video-wrapper"),
         chapter=dict(kind="index-grouped",
                      names="div.chat:has(.vod-play-list-container) > div.chat-header.anim",
                      lists="div.message-container.vod-play-list-container",
@@ -41,8 +41,8 @@ PROFILES = {
     "DM84": dict(
         search=dict(kind="html",
                     url="https://dmbus.cc/s----------.html?wd={keyword}",
-                    names="ul.v_list > li > div.item > a.title",
-                    links="ul.v_list > li > div.item > a.title"),
+                    names="ul.v_list > li:nth-child(-n+8) > div.item > a.title",
+                    links="ul.v_list > li:nth-child(-n+8) > div.item > a.title"),
         chapter=dict(kind="index-grouped",
                      names="ul.tab_control.play_from > *",
                      lists="div.tab_content > ul.play_list",
@@ -55,7 +55,7 @@ PROFILES = {
                     links="div.search.container > ul > li > h3 > a"),
         chapter=dict(kind="index-grouped",
                      names="div.playlist div.tabs > *",
-                     lists="div.playlist div.row > ul.list6",
+                     lists="div.playlist > div.row > ul",
                      eps="li > a", match=""),
     ),
     "akianime": dict(
@@ -70,11 +70,11 @@ PROFILES = {
     ),
     "baimao": dict(
         search=dict(kind="html",
-                    url="https://www.baimaodm.com/s_all?ex=1&kw={keyword}",
-                    names="div.lpic > ul > li h2 > a",
-                    links="div.lpic > ul > li h2 > a"),
+                    url="https://www.bmddm.com/s_all?ex=1&kw={keyword}",
+                    names="div.lpic > ul > li:nth-child(-n+8) h2 > a",
+                    links="div.lpic > ul > li:nth-child(-n+8) h2 > a"),
         chapter=dict(kind="index-grouped",
-                     names="div.tabs:has(.main0 .movurl ul) > ul.menu0 > *",
+                     names="div.tabs > ul.menu0 > li",
                      lists="div.movurl > ul",
                      eps="li > a", match=""),
     ),
@@ -96,15 +96,6 @@ PROFILES = {
                      names="div[class*='episode-panel'] div[class*='episode-list']",
                      lists="div[class*='episode-panel'] div[class*='episode-list']",
                      eps="a", match=""),
-    ),
-    "aafun": dict(
-        search=dict(kind="html", subject_format="a",
-                    url="https://www.moonci.com/search/-------------.html?wd={keyword}&submit=",
-                    links="div.hl-item-title > a"),
-        chapter=dict(kind="index-grouped",
-                     names="a.hl-tabs-btn",
-                     lists="ul.hl-plays-list",
-                     eps="li > a", match=""),
     ),
     # ---- JSON 搜索 ----
     "LMM": dict(
@@ -177,8 +168,9 @@ PROFILES = {
     ),
 }
 
-# Animeko web-selector 表达不了的规则（章节接口型 / 页面无静态剧集）
+# Animeko web-selector 表达不了的规则（章节接口型 / 页面无静态剧集），以及有意不转的重复源
 UNSUPPORTED = {
+    "aafun": "与 moonci 是同一站点（www.moonci.com），重复转写会对同站加倍请求并触发 403 限流，只保留 moonci",
     "sorani": "章节走 JSON 接口，站点详情页为 Svelte 动态渲染，无静态剧集节点",
     "xfdmnext": "章节走 POST JSON 接口，web-selector 仅支持网页 DOM 解析",
     "xfdmneo": "源站已改版为 xifan.moe（Astro 前端渲染），旧规则里的 .thumb-txt/.thumb-menu 节点已不存在",
