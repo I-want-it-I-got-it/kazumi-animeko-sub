@@ -16,12 +16,12 @@ Animeko：设置 → 数据源管理 → 数据源订阅右侧 `+` → 粘贴上
 
 | 状态 | 数量 | 说明 |
 |---|---|---|
-| 已转写并验证 | 15 | 搜索与选集两层在真实页面命中 |
-| 不可转 | 3 | 章节走 JSON 接口或源站已改版 |
+| 已转写并验证 | 14 | 搜索与选集两层在真实页面命中 |
+| 不可转 / 不转 | 4 | 章节走 JSON 接口、源站已改版，或与其他源同站 |
 
-已验证的源：7sefun、AGE、DM84、LMM、MXdm、TvTFun、aafun、akianime、baimao、dalvdm、ezdmw、giriGiriLove、mgnacg、moonci（mutefun 因 Cloudflare 403 未完成验证）。
+已验证的源：7sefun、AGE、DM84、LMM、MXdm、TvTFun、akianime、baimao、dalvdm、ezdmw、giriGiriLove、mgnacg、moonci（mutefun 因 Cloudflare 403 未完成验证）。
 
-未转写：sorani（章节走 JSON 接口）、xfdmnext（POST 接口）、xfdmneo（源站已改版为 xifan.moe）。
+未转写：aafun（与 moonci 同为 www.moonci.com，只保留 moonci）、sorani（章节走 JSON 接口）、xfdmnext（POST 接口）、xfdmneo（源站已改版为 xifan.moe）。
 
 ## 字段落位
 
@@ -40,10 +40,15 @@ Kazumi 的 searchName / searchResult 是对每条结果节点求值，chapterRes
 ## 已知限制
 
 - AGE 的详情链接由源站写成 http，个别网络会 504。
-- ezdmw 的剧集是线路标签的兄弟节点，CSS 无法按线路分组，只取主线。
-- 7sefun、baimao 用到 `:has()`，Android 端 jsoup 1.18 支持；iOS 端异常时改为 no-channel 取主线。
+- ezdmw 的剧集是线路标签的兄弟节点，只取主线（线路名「主线线路」）。
+- 选源面板里的线路芯片文字 = 线路名节点文本经 `matchChannelName` 正则取出的 `ch` 组（Animeko 写进 `Media.properties.alliance`，同名线路合并成一个芯片）。Animeko 的缺省正则 `^(?<ch>.+?)(\d+)?$` 会把「线路1」「线路2」都截成「线路」、「X.4」截成「X.」，所以生成脚本给每个源都显式写了 `matchChannelName`，默认 `^(?<ch>.+?)(?:\s+\d+)?$`，只去掉用空格隔开的集数后缀。no-channel 格式没有线路名，芯片是空的，所以 AGE、TvTFun、ezdmw 都改成了 index-grouped。
+- TvTFun 的页面只渲染当前线路的剧集，芯片显示的是激活中的线路按钮文字。
+- 7sefun 用到 `:has()`，Android 端 jsoup 1.18 支持；iOS 端异常时改为 no-channel 取主线。baimao 已改为不依赖 `:has()`。
+- Animeko 会按顺序抓取**每一条**搜索结果的详情页，全部抓完才结束该源的加载（列表里一直转圈）。热门长篇（如名侦探柯南）一搜就是十几到三十多个结果，所以 DM84、baimao、7sefun 的搜索结果选择器用 `:nth-child(-n+N)` 只取前 N 条（7sefun 详情页单页 2–6 秒，取 6 条；DM84、baimao 取 8 条）。
 - mutefun 搜索返回 403（Cloudflare），实际能否通过取决于设备网络。
 
 ## 维护
 
-站点改版时，改生成脚本 `PROFILES` 里对应源的 CSS，重新生成并跑一遍 `verify_sub.py`（抓真实页面校验搜索结果数、线路数、首集数），再替换仓库里的 JSON。
+站点改版时（`.github/workflows/verify.yml` 每天自动跑一次校验，结果见 Actions 摘要），改生成脚本 `PROFILES` 里对应源的 CSS，重新生成并跑一遍 `verify_sub.py`（抓真实页面校验搜索结果数、线路数、首集数），再替换仓库里的 JSON。
+
+`tools/crawl_like_animeko.py` 按 Animeko 的方式（搜索 → 逐个抓所有结果的详情页）测每个源的总耗时：`KW=名侦探柯南 python3 tools/crawl_like_animeko.py kazumi-animeko-sub.json DM84 7sefun`。

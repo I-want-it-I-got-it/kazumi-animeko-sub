@@ -79,7 +79,7 @@ h1 em{font-style:normal;color:var(--teal)}
 
   <div class="nums">
     <div class="num"><b>18</b><span>在役规则（index.json 收录）</span></div>
-    <div class="num hit"><b>15</b><span>已转写并在真实页面验证</span></div>
+    <div class="num hit"><b>14</b><span>已转写并在真实页面验证</span></div>
     <div class="num miss"><b>3</b><span>web-selector 表达不了</span></div>
   </div>
   <p class="note">另有 68 条标记 deprecated 的规则未转：源站已失效，Kazumi 自身也不再展示。</p>
@@ -132,16 +132,15 @@ h1 em{font-style:normal;color:var(--teal)}
     <h2>逐源状态</h2>
     <div class="grid">
       <div class="chip"><i class="dot ok"></i>7sefun<small>2 线</small></div>
-      <div class="chip"><i class="dot ok"></i>AGE<small>主线</small></div>
+      <div class="chip"><i class="dot ok"></i>AGE<small>8 线</small></div>
       <div class="chip"><i class="dot ok"></i>DM84<small>3 线</small></div>
       <div class="chip"><i class="dot ok"></i>LMM<small>2 线</small></div>
       <div class="chip"><i class="dot ok"></i>MXdm<small>4 线</small></div>
-      <div class="chip"><i class="dot ok"></i>TvTFun<small>主线</small></div>
-      <div class="chip"><i class="dot ok"></i>aafun<small>3 线</small></div>
+      <div class="chip"><i class="dot ok"></i>TvTFun<small>当前线路</small></div>
       <div class="chip"><i class="dot ok"></i>akianime<small>3 线</small></div>
       <div class="chip"><i class="dot ok"></i>baimao<small>6 线</small></div>
       <div class="chip"><i class="dot ok"></i>dalvdm<small>4 线</small></div>
-      <div class="chip"><i class="dot ok"></i>ezdmw<small>主线</small></div>
+      <div class="chip"><i class="dot ok"></i>ezdmw<small>主线线路</small></div>
       <div class="chip"><i class="dot ok"></i>giriGiriLove<small>2 线</small></div>
       <div class="chip"><i class="dot ok"></i>mgnacg<small>5 线</small></div>
       <div class="chip"><i class="dot ok"></i>moonci<small>3 线</small></div>
@@ -149,6 +148,7 @@ h1 em{font-style:normal;color:var(--teal)}
       <div class="chip"><i class="dot no"></i>sorani<small>接口章节</small></div>
       <div class="chip"><i class="dot no"></i>xfdmnext<small>POST 接口</small></div>
       <div class="chip"><i class="dot no"></i>xfdmneo<small>源站改版</small></div>
+      <div class="chip"><i class="dot no"></i>aafun<small>与 moonci 同站</small></div>
     </div>
   </div>
 
@@ -162,7 +162,7 @@ h1 em{font-style:normal;color:var(--teal)}
       <ul>
         <li>AGE 详情链接是 http，个别网络会 504</li>
         <li>ezdmw 只能取主线（剧集是兄弟节点）</li>
-        <li>7sefun、baimao 用到 :has() 伪类，jsoup 1.18 支持，iOS 端异常时改回主线</li>
+        <li>7sefun 用到 :has() 伪类（baimao 已改为不依赖 :has()），jsoup 1.18 支持，iOS 端异常时改回主线</li>
       </ul>
     </div>
   </div>
